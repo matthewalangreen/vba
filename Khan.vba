@@ -15,7 +15,7 @@ Sheets("Summary (5)").range("D:G").value = Sheets("Mission-specific (5)").range(
 Sheets("Summary (6)").range("D:G").value = Sheets("Mission-specific (6)").range("D:G").value
 Sheets("Summary (7)").range("D:G").value = Sheets("Mission-specific (7)").range("D:G").value
 
-'Delete extra sheets
+'Delete extra sheets''
 '******************************************
 
 Application.DisplayAlerts = False
