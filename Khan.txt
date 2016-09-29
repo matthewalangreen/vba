@@ -3,7 +3,7 @@
 Dim weekNumber As Integer
 weekNumber = 2
 Dim totalStudents As Integer
-totalStudents = 137
+totalStudents = 164
 
 'Pull values from mission specific into summary
 '*************************************************
@@ -131,30 +131,28 @@ Application.DisplayAlerts = True
 
 'Add hyperlinks
 '******************************************
-Worksheets("Master").Activate
-Columns("N").Select
-Range("N1").Value = "Hyperlinks"
+'Worksheets("Master").Activate
+'Columns("N").Select
+'Range("N1").Value = "Hyperlinks"
 ' Written by: Michael Milette
 ' Copyright 2011-2012 TNG Consulting Inc.
 ' Purpose: Converts the selected text into hyperlinks.
 ' Note: HTTP is assumed if not specified in the text.
 
-  Dim Cell As Range
-  For Each Cell In Intersect(Selection, ActiveSheet.UsedRange)
-    If Trim(Cell) > "" Then
-      If Left(Trim(Cell), 4) = "http" Then  ' handles http and https
-        ActiveSheet.Hyperlinks.Add Cell, Trim(Cell.Value)
-      Else ' Default to http if no protocol was specified.
-        ActiveSheet.Hyperlinks.Add Cell, "http://" & Trim(Cell.Value)
-      End If
-    End If
-  Next
+  'Dim Cell As Range
+ ' For Each Cell In Intersect(Selection, ActiveSheet.UsedRange)
+  '  If Trim(Cell) > "" Then
+  '    If Left(Trim(Cell), 4) = "http" Then  ' handles http and https
+  '      ActiveSheet.Hyperlinks.Add Cell, Trim(Cell.Value)
+  '    Else ' Default to http if no protocol was specified.
+  '      ActiveSheet.Hyperlinks.Add Cell, "http://" & Trim(Cell.Value)
+  '    End If
+  '  End If
+'  Next
 
 
 
-'Remove duplicate
-'******************************************
-ActiveSheet.Range("A:N").RemoveDuplicates Columns:=Array(1, 14), Header:=xlYes
+
 
 
 'Rotate label text
@@ -166,7 +164,7 @@ Range("N1").Orientation = xlHorizontal
 
 'Add columns for values
 '******************************************
-Range("O1:O150").Value = " "
+Range("O1:O170").Value = " "
 Range("L1").EntireColumn.Insert
 Range("L1").Value = "% Complete"
 Range("M1").EntireColumn.Insert
@@ -188,6 +186,10 @@ Range("H:J").ColumnWidth = 8
 Range("K:M").ColumnWidth = 5
 Range("N:N").ColumnWidth = 8
 Range("P:P").ColumnWidth = 12
+
+'Remove duplicates
+'******************************************
+Sheets("Master").Range("A:P").RemoveDuplicates Columns:=Array(1, 16), Header:=xlYes
 
 'calculate total topics
 '*****************************
