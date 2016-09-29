@@ -1,10 +1,19 @@
-Sub kk()
 'Globals
 '*****************************************
 Dim weekNumber As Integer
 weekNumber = 2
 Dim totalStudents As Integer
 totalStudents = 137
+
+'Pull values from mission specific into summary
+'*************************************************
+Sheets("Summary").range("D:G").value = Sheets("Mission-specific").range("D:G").value
+Sheets("Summary (2)").range("D:G").value = Sheets("Mission-specific (2)").range("D:G").value
+Sheets("Summary (3)").range("D:G").value = Sheets("Mission-specific (3)").range("D:G").value
+Sheets("Summary (4)").range("D:G").value = Sheets("Mission-specific (4)").range("D:G").value
+Sheets("Summary (5)").range("D:G").value = Sheets("Mission-specific (5)").range("D:G").value
+Sheets("Summary (6)").range("D:G").value = Sheets("Mission-specific (6)").range("D:G").value
+Sheets("Summary (7)").range("D:G").value = Sheets("Mission-specific (7)").range("D:G").value
 
 'Delete extra sheets
 '******************************************
@@ -297,4 +306,3 @@ Columns("A:P").Sort key1:=Range("A:A"), order1:=xlAscending, Header:=xlYes
  Range("L2:L137").Borders(xlEdgeBottom).LineStyle = xlContinuous
 
 
-End Sub
