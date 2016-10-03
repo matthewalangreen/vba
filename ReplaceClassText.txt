@@ -435,14 +435,14 @@ For i = 2 To totalStudents 'row
     count = 0
 Next i
 
-'Label names as behind percent complete or not AND put EMPTY Value in Row Q
+'Label names as behind percent complete or not 
 '******************************************
 Dim x As Integer 'row
 Dim comp As Integer 'how complete are you?
 comp = weekNumber * 3
 
 For x = 2 To totalStudents 'row
-	'Cells(x,17).Value = "a thing"
+	
     If Cells(x, 12).Value >= comp Then
             Cells(x, 12).Interior.Color = RGB(152, 251, 152)
             Cells(x, 1).Interior.Color = RGB(152, 251, 152)
@@ -464,3 +464,8 @@ Next x
 ' Range("L2:L163").Borders(xlEdgeTop).LineStyle = xlContinuous
 ' Range("L2:L163").Borders(xlEdgeBottom).LineStyle = xlContinuous
 
+
+'Delete profile column.  Its dumb and I hate it
+'****************************************************
+
+Columns(16).EntireColumn.Delete
