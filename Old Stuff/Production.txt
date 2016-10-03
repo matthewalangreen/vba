@@ -1,9 +1,9 @@
 'Globals
 '*****************************************
 Dim weekNumber As Integer
-weekNumber = 3
+weekNumber = 2
 Dim totalStudents As Integer
-totalStudents = 165
+totalStudents = 164
 
 'Pull values from mission specific into summary
 '*************************************************
@@ -404,32 +404,38 @@ arrs = ActiveSheet.UsedRange.rows.count
 'Label names as "on track" or not
 '******************************************
 Dim i As Integer 'row
-Dim studentPractice As Integer
-Dim fiveHoursEachWeek As Integer
-Dim threeHoursEachWeek As Integer
+Dim j As Integer 'column
+Dim count As Integer
+Dim rowSum As Integer
+'Dim weekNumber As Integer
+'weekNumber = 2
+Dim minPracticedTotal As Integer
 
-fiveHoursEachWeek = weekNumber * 300 'five hours each week, duh
-threeHoursEachWeek = weekNumber * 180 'three hours each week, duh
 
+minPracticedTotal = weekNumber * 15 'fifteen items practiced total per week
+count = 0
 
-
-For i = 2 To totalStudents 'iterate over rows
-	studentPractice = Cells(i,8).Value 
-   
-    If studentPractice >= fiveHoursEachWeek Then
-    	Cells(i,8).Interior.Color = RGB(152,251,152) 'Mark green if you've averaged over 5hrs/week
-   
-    ElseIf studentPractice >= threeHoursEachWeek Then
-   		Cells(i,8).Interior.Color = RGB(255,255,152) ' mark yellow for 3hrs/week
-   		
+For i = 2 To totalStudents 'row
+    For j = 3 To 7 'column
+        count = count + Cells(i, j).Value
+    Next j
+    'Cells(i, 9).Value = count
+    
+    If count < minPracticedTotal Then
+    Cells(i, 4).Interior.Color = RGB(255, 255, 153)
+    Cells(i, 5).Interior.Color = RGB(255, 255, 153)
+    Cells(i, 6).Interior.Color = RGB(255, 255, 153)
+    Cells(i, 7).Interior.Color = RGB(255, 255, 153)
     Else
-    	Cells(i,8).Interior.Color = RGB(255, 91, 79) ' mark red for all others
- 
+    Cells(i, 4).Interior.Color = RGB(152, 251, 152)
+    Cells(i, 5).Interior.Color = RGB(152, 251, 152)
+    Cells(i, 6).Interior.Color = RGB(152, 251, 152)
+    Cells(i, 7).Interior.Color = RGB(152, 251, 152)
     End If
-
+    count = 0
 Next i
 
-'Label names as behind percent complete or not 
+'Label names as behind percent complete or not AND put EMPTY Value in Row Q
 '******************************************
 Dim x As Integer 'row
 Dim comp As Integer 'how complete are you?
@@ -440,7 +446,7 @@ For x = 2 To totalStudents 'row
     If Cells(x, 12).Value >= comp Then
             Cells(x, 12).Interior.Color = RGB(152, 251, 152)
             Cells(x, 1).Interior.Color = RGB(152, 251, 152)
-       ElseIf Cells(x, 12).Value >= comp - 3 Then
+       ElseIf Cells(x, 12).Value >= comp - 2 Then
             Cells(x, 12).Interior.Color = RGB(255, 255, 152)
             Cells(x, 1).Interior.Color = RGB(255, 255, 152)
         Else
