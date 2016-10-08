@@ -1,43 +1,3 @@
-' we need to get three sheets from KA each with a column of data we need
-' this data gets selected and populated into the sheet and then used with new
-' algorithms below to highlight students based on performance
-
-' 1. Combine new sheets with all other old sheets.  I hope this can happen at the 
-'    beginning with the same automator script
-' 
-' 2. Make room in 
-
-
-
-
-' this is how we will hide the rows in main sheet
-'************************************************
-' Const FR = 4
- '   Dim LR As Long, i As Long
-'    LR = Range("A" & Rows.Count).End(xlUp).Row
-'    For i = LR To FR Step -1
-'        If WorksheetFunction.CountIf(Range("A" & FR & ":A" & i), _
-'        Range("A" & i).Value) > 1 Then Rows(i).Hidden = True
-'    Next i
-
-' This is how we will skip the hidden rows
-'**************************************************
-'For i = 2 To 20 
-     
-'   If Not Rows(i).Hidden 
-     
-     'do stuff
-'End If 
-'End With 
-
-
-
-
-
-
-
-
-
 
 'Globals
 '*****************************************
@@ -56,11 +16,44 @@ Sheets("Summary (5)").Range("D:G").Value = Sheets("Mission-specific (5)").Range(
 Sheets("Summary (6)").Range("D:G").Value = Sheets("Mission-specific (6)").Range("D:G").Value
 Sheets("Summary (7)").Range("D:G").Value = Sheets("Mission-specific (7)").Range("D:G").Value
 Sheets("Summary (8)").Range("D:G").Value = Sheets("Mission-specific (8)").Range("D:G").Value
-Sheets("Summary (12)").Range("D:G").Value = Sheets("Mission-specific (12)").Range("D:G").Value
+Sheets("Summary (13)").Range("D:G").Value = Sheets("Mission-specific (13)").Range("D:G").Value
 
 
 ' Do the extra time calculations and get them into a single sheet
 '************************************************************************
+' get data from summary (9) - summary (12) into a single sheet by pulling data into
+' specific and labeled columns
+
+
+Worksheets("Summary (9)").Activate
+Columns("B:G").EntireColumn.Delete
+Columns("C:H").EntireColumn.Delete
+
+
+Sheets("Summary (9)").Range("C:C").Value = Sheets("Summary (10)").Range("H:H").Value
+Sheets("Summary (9)").Range("D:D").Value = Sheets("Summary (11)").Range("H:H").Value
+Sheets("Summary (9)").Range("E:E").Value = Sheets("Summary (12)").Range("H:H").Value
+
+Range("B1").Value = "Yesterday"
+Range("C1").Value = "2 Days"
+Range("D1").Value = "7 Days"
+Range("E1").Value = "30 Days"
+
+Worksheets("Summary (9)").Columns.AutoFit
+
+Worksheets("Summary (9)").Name = "Time"
+
+Worksheets("Time").Move _ 
+ after:=Worksheets("Summary (5)")
+
+
+Application.DisplayAlerts = False
+Sheets("Summary (10)").Delete
+Sheets("Summary (11)").Delete
+Sheets("Summary (12)").Delete
+Application.DisplayAlerts = True
+
+
 
 
 'Delete extra sheets''
@@ -79,6 +72,7 @@ Sheets("Mission-specific (9)").Delete
 Sheets("Mission-specific (10)").Delete
 Sheets("Mission-specific (11)").Delete
 Sheets("Mission-specific (12)").Delete
+Sheets("Mission-specific (13)").Delete
 
 Sheets("Videos").Delete
 Sheets("Videos (2)").Delete
@@ -92,6 +86,7 @@ Sheets("Videos (9)").Delete
 Sheets("Videos (10)").Delete
 Sheets("Videos (11)").Delete
 Sheets("Videos (12)").Delete
+Sheets("Videos (13)").Delete
 
 Sheets("Badges").Delete
 Sheets("Badges (2)").Delete
@@ -105,6 +100,7 @@ Sheets("Badges (9)").Delete
 Sheets("Badges (10)").Delete
 Sheets("Badges (11)").Delete
 Sheets("Badges (12)").Delete
+Sheets("Badges (13)").Delete
 
 Sheets("Points").Delete
 Sheets("Points (2)").Delete
@@ -118,6 +114,7 @@ Sheets("Points (9)").Delete
 Sheets("Points (10)").Delete
 Sheets("Points (11)").Delete
 Sheets("Points (12)").Delete
+Sheets("Points (13)").Delete
 
 Sheets("Exercises").Delete
 Sheets("Exercises (2)").Delete
@@ -131,6 +128,7 @@ Sheets("Exercises (9)").Delete
 Sheets("Exercises (10)").Delete
 Sheets("Exercises (11)").Delete
 Sheets("Exercises (12)").Delete
+Sheets("Exercises (13)").Delete
 
 
 
@@ -249,7 +247,7 @@ Next rw
 
 'Algebra 1
 '*************************************************************
-Set sh = Worksheets("Summary (12)")
+Set sh = Worksheets("Summary (13)")
 For Each rw In sh.rows
     If sh.Cells(rw.Row, 13).Value = "" Then
         Exit For
@@ -310,19 +308,19 @@ Application.DisplayAlerts = True
      'We can start loop
     For Each sht In wrk.Worksheets
          'If worksheet in loop is the last one, stop execution (it is Master worksheet)
-'This is my hack
-'*****************************************************************
-         If sht.Name <> "Summary (9)" And sht.Name <> "Summary (10)" And sht.Name <> "Summary (11)" Then
+
        		If sht.Index = wrk.Worksheets.count Then
             	Exit For
-         	End If
+            '**** I'm messing with this ****
+            ElseIf sht.Name <> "Time" Then
+         	
          	
          	'Data range in worksheet - starts from second row as first rows are the header rows in all worksheets
        	 	Set rng = sht.Range(sht.Cells(2, 1), sht.Cells(65536, 1).End(xlUp).Resize(, colCount))
          	'Put data into the Master worksheet
         	trg.Cells(65536, 1).End(xlUp).Offset(1).Resize(rng.rows.count, rng.Columns.count).Value = rng.Value
-         End If 'This ends my hack ****************************************
-'******************************************************************
+        	End If
+
     Next sht
      'Fit the columns in Master worksheet
     trg.Columns.AutoFit
@@ -340,7 +338,8 @@ Application.DisplayAlerts = True
     Sheets("Summary (6)").Delete
     Sheets("Summary (7)").Delete
     Sheets("Summary (8)").Delete
-    Sheets("Summary (9)").Delete
+    Sheets("Summary (13)").Delete
+    
     
     
     Application.DisplayAlerts = True
@@ -451,7 +450,7 @@ Columns("A:P").Sort key1:=Range("A:A"), order1:=xlAscending, Header:=xlYes
 'Color alternating rows
 '******************************************
 
-ActiveSheet.Range("A:P").Select
+ActiveSheet.Range("A:Q").Select
 Set sh = Worksheets("Master")
 Dim Counter As Integer
 Dim arrs As Integer
