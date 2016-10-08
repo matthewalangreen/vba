@@ -43,6 +43,8 @@ Worksheets("Summary (9)").Columns.AutoFit
 
 Worksheets("Summary (9)").Name = "Time"
 
+Worksheets("Time").Columns("A:E").Sort key1:=Range("A:A"), order1:=xlAscending, Header:=xlYes
+
 Worksheets("Time").Move _ 
  after:=Worksheets("Summary (5)")
 
@@ -345,6 +347,11 @@ Application.DisplayAlerts = True
     Application.DisplayAlerts = True
 
 
+
+
+
+
+
 'Rotate label text
 '******************************************
 rows(1).Orientation = xlUpward
@@ -515,12 +522,67 @@ For x = 2 To totalStudents 'row
         End If
 Next x
 
+'Migrate data from "Time" Sheet into main 
+'sheet before additional sorting, calculations and formatting
+'******************************************
 
 
-'Borders
-'********************************
- 'Range("L2:L163").Borders(xlEdgeLeft).LineStyle = xlContinuous
-' Range("L2:L163").Borders(xlEdgeRight).LineStyle = xlContinuous
-' Range("L2:L163").Borders(xlEdgeTop).LineStyle = xlContinuous
-' Range("L2:L163").Borders(xlEdgeBottom).LineStyle = xlContinuous
+' make new columns
+'******************************************
+Range("H1").EntireColumn.Insert
+Range("H1").EntireColumn.Insert
+Range("H1").EntireColumn.Insert
+Range("H1").EntireColumn.Insert
+Range("H1").Value = "Yesterday"
+Range("I1").Value = "2 Days"
+Range("J1").Value = "7 Days"
+Range("K1").Value = "30 Days"
+Range("L1").Value = "All Time"
+
+' Delete Badges, Points & Profile
+'******************************************
+Range("O1").EntireColumn.Delete
+Range("Q1").EntireColumn.Delete
+Range("R1").EntireColumn.Delete
+
+
+    
+    
+' iterate over rows, skipping duplicates
+'******************************************
+
+'Sheets("Master").Range("H:H").SpecialCells(xlCellTypeVisible).Value = Sheets("Time").Range("B:B").Value
+
+
+
+' pasting values into place based on name
+' Sheets("Summary (2)").Range("D:G").Value = Sheets("Mission-specific (2)").Range("D:G").Value
+
+
+
+Dim clicker As Integer
+clicker = 2
+
+For x = 2 To totalStudents 'row
+	Do While Worksheets("Master").Cells(x,1).Value <> Worksheets("Time").Cells(clicker,1).Value
+  		clicker = clicker - 1
+	Loop
+	
+	Worksheets("Master").Cells(x,8).Value = Worksheets("Time").Cells(clicker,2).Value
+	Worksheets("Master").Cells(x,9).Value = Worksheets("Time").Cells(clicker,3).Value
+	Worksheets("Master").Cells(x,10).Value = Worksheets("Time").Cells(clicker,4).Value
+	Worksheets("Master").Cells(x,11).Value = Worksheets("Time").Cells(clicker,5).Value
+	
+	clicker = clicker + 1
+Next x
+
+
+Range("H:N").NumberFormat = "#####"
+Range("H:N").ColumnWidth = 6
+
+
+
+
+
+
 
