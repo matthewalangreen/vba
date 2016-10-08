@@ -2,9 +2,12 @@
 'Globals
 '*****************************************
 Dim weekNumber As Integer
-weekNumber = 3
+Dim minutesPerDay As Integer
 Dim totalStudents As Integer
+
+weekNumber = 3
 totalStudents = 165
+minutesPerDay = 30
 
 'Pull values from mission specific into summary
 '*************************************************
@@ -467,36 +470,34 @@ arrs = ActiveSheet.UsedRange.rows.count
     For Counter = 2 To arrs
         'If the row is an odd number (within the selection)...
         If Counter Mod 2 = 1 Then
-        	Cells(Counter,17).Interior.Color = RGB(220,220,220)
-            Selection.rows(Counter).Interior.Color = RGB(220, 220, 220)
+        	Cells(Counter,17).Interior.Color = RGB(240,240,240)
+            Selection.rows(Counter).Interior.Color = RGB(240, 240, 240)
         End If
     Next
     
 
 
-'Label names as "on track" or not
+'Label total time based on minute of practice average
 '******************************************
 Dim i As Integer 'row
 Dim studentPractice As Integer
 Dim fiveHoursEachWeek As Integer
 Dim threeHoursEachWeek As Integer
+Dim minimumPractice As Integer
+'minutesPerDay = 30
 
-fiveHoursEachWeek = weekNumber * 300 'five hours each week, duh
-threeHoursEachWeek = weekNumber * 180 'three hours each week, duh
 
+minimumPractice = minutesPerDay * 5 * weekNumber
 
 
 For i = 2 To totalStudents 'iterate over rows
 	studentPractice = Cells(i,8).Value 
    
-    If studentPractice >= fiveHoursEachWeek Then
-    	Cells(i,8).Interior.Color = RGB(152,251,152) 'Mark green if you've averaged over 5hrs/week
+    If studentPractice >= minimumPractice Then
+    	Cells(i,8).Font.Color = RGB(34,139,34) 'Mark green 
    
-    ElseIf studentPractice >= threeHoursEachWeek Then
-   		Cells(i,8).Interior.Color = RGB(255,255,152) ' mark yellow for 3hrs/week
-   		
     Else
-    	Cells(i,8).Interior.Color = RGB(255, 91, 79) ' mark red for all others
+    	Cells(i,8).Font.Color = RGB(255,0,0) 'Otherwise mark red
  
     End If
 
@@ -511,14 +512,14 @@ comp = weekNumber * 3
 For x = 2 To totalStudents 'row
 	'Cells(x,17).Value = "a thing"
     If Cells(x, 12).Value >= comp Then
-            Cells(x, 12).Interior.Color = RGB(152, 251, 152)
-            Cells(x, 1).Interior.Color = RGB(152, 251, 152)
+            Cells(x, 12).Font.Color = RGB(34,139,34) 'green
+            Cells(x, 1).Font.Color = RGB(34,139,34) 'green
        ElseIf Cells(x, 12).Value >= comp - 3 Then
-            Cells(x, 12).Interior.Color = RGB(255, 255, 152)
-            Cells(x, 1).Interior.Color = RGB(255, 255, 152)
+            Cells(x, 12).Font.Color = RGB(255, 128, 0) 'orange
+            Cells(x, 1).Font.Color = RGB(255, 128, 0) 'orange
         Else
-            Cells(x, 12).Interior.Color = RGB(255, 91, 79)
-            Cells(x, 1).Interior.Color = RGB(255, 91, 79)
+            Cells(x, 12).Font.Color = RGB(255,0,0)
+            Cells(x, 1).Font.Color = RGB(255,0,0)
         End If
 Next x
 
@@ -539,6 +540,7 @@ Range("J1").Value = "7 Days"
 Range("K1").Value = "30 Days"
 Range("L1").Value = "All Time"
 
+
 ' Delete Badges, Points & Profile
 '******************************************
 Range("O1").EntireColumn.Delete
@@ -546,19 +548,8 @@ Range("Q1").EntireColumn.Delete
 Range("R1").EntireColumn.Delete
 
 
-    
-    
-' iterate over rows, skipping duplicates
+' Migrate date data from other sheet
 '******************************************
-
-'Sheets("Master").Range("H:H").SpecialCells(xlCellTypeVisible).Value = Sheets("Time").Range("B:B").Value
-
-
-
-' pasting values into place based on name
-' Sheets("Summary (2)").Range("D:G").Value = Sheets("Mission-specific (2)").Range("D:G").Value
-
-
 
 Dim clicker As Integer
 clicker = 2
@@ -577,12 +568,86 @@ For x = 2 To totalStudents 'row
 Next x
 
 
+' More formatting of column widths
+'******************************************
+
 Range("H:N").NumberFormat = "#####"
 Range("H:N").ColumnWidth = 6
 
 
+'  Add today's date to top right column of sheet
+'******************************************
+
+Dim str As String
+str = Range("R1").Value
+'Format (Now, “dd/MM/yyyy”)
+str = str + " " + Format(Now, "dd/MM/yy")
+Range("R1").Value = str
+
+'Label time columns based on practice
+'******************************************
+Dim yDay As Integer
+Dim twoDay As Integer
+Dim sevenDay As Integer
+Dim thirtyDay As Integer
+
+yDay = minutesPerDay
+twoDay = minutesPerDay * 2
+sevenDay = minutesPerDay * 5
+thirtyDay = minutesPerDay * 22
+
+'Label yesterday
+'********************************************
+For i = 2 To totalStudents 'iterate over rows
+	studentPractice = Cells(i,8).Value 
+    If studentPractice >= yDay Then
+    	Cells(i,8).Font.Color = RGB(34,139,34) 'Mark green 
+    Else
+    	Cells(i,8).Font.Color = RGB(255, 0, 0) 'Otherwise mark red
+    End If
+Next i
+
+'Label 2 days ago
+'********************************************
+For i = 2 To totalStudents 'iterate over rows
+	studentPractice = Cells(i,9).Value 
+    If studentPractice >= twoDay Then
+    	Cells(i,9).Font.Color = RGB(34,139,34) 'Mark green 
+    Else
+    	Cells(i,9).Font.Color = RGB(255, 0, 0) 'Otherwise mark red
+    End If
+Next i
+
+'Label 7 days ago
+'********************************************
+For i = 2 To totalStudents 'iterate over rows
+	studentPractice = Cells(i,10).Value 
+    If studentPractice >= sevenDay Then
+    	Cells(i,10).Font.Color = RGB(34,139,34) 'Mark green 
+    Else
+    	Cells(i,10).Font.Color = RGB(255, 0, 0) 'Otherwise mark red
+    End If
+Next i
 
 
+'Label last 30 days
+'********************************************
+For i = 2 To totalStudents 'iterate over rows
+	studentPractice = Cells(i,11).Value 
+    If studentPractice >= thirtyDay Then
+    	Cells(i,11).Font.Color = RGB(34,139,34) 'Mark green 
+    Else
+    	Cells(i,11).Font.Color = RGB(255, 0, 0) 'Otherwise mark red
+    End If
+Next i
 
+
+'dark green RGB(34,139,34)
+'light grey RGB(224,224,224)
+'dark red RGB(204,0,0)
+'yellow RGB(255,255,0)
+' orange RGB(255,128,0)
+'Bold
+Worksheets("Master").Range("A:R").Font.Bold = True
 
 
