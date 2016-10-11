@@ -469,7 +469,7 @@ arrs = ActiveSheet.UsedRange.rows.count
 
     For Counter = 2 To arrs
         'If the row is an odd number (within the selection)...
-        If Counter Mod 2 = 1 Then
+        If Counter Mod 2 = 0 Then
         	Cells(Counter,17).Interior.Color = RGB(240,240,240)
             Selection.rows(Counter).Interior.Color = RGB(240, 240, 240)
         End If
@@ -581,7 +581,7 @@ Range("H:N").ColumnWidth = 6
 Dim str As String
 str = Range("R1").Value
 'Format (Now, “dd/MM/yyyy”)
-str = str + " " + Format(Now, "dd/MM/yy")
+str = str + " " + Format(Now, "MM/dd/yy")
 Range("R1").Value = str
 
 'Label time columns based on practice
