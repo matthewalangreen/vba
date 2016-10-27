@@ -5,8 +5,8 @@ Dim weekNumber As Integer
 Dim minutesPerDay As Integer
 Dim totalStudents As Integer
 
-weekNumber = 3
-totalStudents = 165
+weekNumber = 5
+totalStudents = 169
 minutesPerDay = 30
 
 'Pull values from mission specific into summary
