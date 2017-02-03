@@ -1,20 +1,24 @@
 
 ' Notes
-' Summary is All students
-' Summary (2) is All students
-' Summary (3) is All students
-' Summary (4) is A2 or Trigonometry
-' Summary (5) is Statistics         --YES
-' Summary (6) is PreCalculus        --YES
-' Summary (7) is PreAlgebra         --YES
-' Summary (8) is Geometry           --YES
-' Summary (9) is EMPTY???
-' Summary (10) is Calc A            --YES
-' Summary (11) is A2 or Trig
-' Summary (12) is Algebra 1         --YES
-' Summary (13) is all students
+' Summary is 30 days                  --YES
+' Summary (2) is yesterday            --YES
+' Summary (3) is last 2 days`         --YES
+' Summary (4) is Trigonometry         --YES
+' Summary (5) is Statistics           --YES
+' Summary (6) is PreCalculus          --YES
+' Summary (7) is PreAlgebra           --YES
+' Summary (8) is Geometry             --YES
+' Summary (9) is Calc B               --YES
+' Summary (10) is Calc A              --YES
+' Summary (11) is A2                  --YES
+' Summary (12) is Algebra 1           --YES
+' Summary (13) is ALL time            --YES
 
-
+' ISSUES TO FIX'
+' 1.  Make another sheet besides summmary 9 to populate with info... We're gonna
+'     Have calculus B students with scores in there pretty soon.'
+' 2.  Determine if the reason yesterday & today match is because I'm using the
+'     Wrong sheet.  (I have them mislabeled)'
 
 'Globals
 '*****************************************
