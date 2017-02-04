@@ -1,24 +1,5 @@
 
-' Notes
-' Summary is 30 days                  --YES
-' Summary (2) is yesterday            --YES
-' Summary (3) is last 2 days`         --YES
-' Summary (4) is Trigonometry         --YES
-' Summary (5) is Statistics           --YES
-' Summary (6) is PreCalculus          --YES
-' Summary (7) is PreAlgebra           --YES
-' Summary (8) is Geometry             --YES
-' Summary (9) is Calc B               --YES
-' Summary (10) is Calc A              --YES
-' Summary (11) is A2                  --YES
-' Summary (12) is Algebra 1           --YES
-' Summary (13) is ALL time            --YES
-
-' ISSUES TO FIX'
-' 1.  Make another sheet besides summmary 9 to populate with info... We're gonna
-'     Have calculus B students with scores in there pretty soon.'
-' 2.  Determine if the reason yesterday & today match is because I'm using the
-'     Wrong sheet.  (I have them mislabeled)'
+Application.ScreenUpdating = False
 
 'Globals
 '*****************************************
@@ -26,8 +7,8 @@ Dim weekNumber As Integer
 Dim minutesPerDay As Integer
 Dim totalStudents As Integer
 
-weekNumber = 15
-totalStudents = 176
+weekNumber = 17
+totalStudents = 185
 minutesPerDay = 30
 
 'Pull values from mission specific into summary
@@ -40,136 +21,100 @@ Sheets("Summary (5)").Range("D:G").Value = Sheets("Mission-specific (5)").Range(
 Sheets("Summary (6)").Range("D:G").Value = Sheets("Mission-specific (6)").Range("D:G").Value
 Sheets("Summary (7)").Range("D:G").Value = Sheets("Mission-specific (7)").Range("D:G").Value
 Sheets("Summary (8)").Range("D:G").Value = Sheets("Mission-specific (8)").Range("D:G").Value
-Sheets("Summary (13)").Range("D:G").Value = Sheets("Mission-specific (13)").Range("D:G").Value
+Sheets("Summary (9)").Range("D:G").Value = Sheets("Mission-specific (9)").Range("D:G").Value
 
 
 ' Do the extra time calculations and get them into a single sheet
 '************************************************************************
-' get data from summary (9) - summary (12) into a single sheet by pulling data into
+' get data from summary (10) - summary (13) into a single sheet by pulling data into
 ' specific and labeled columns
 
 
-Worksheets("Summary (9)").Activate
+Worksheets("Summary (10)").Activate
 Columns("B:G").EntireColumn.Delete
 Columns("C:H").EntireColumn.Delete
 
 
-Sheets("Summary (9)").Range("C:C").Value = Sheets("Summary (10)").Range("H:H").Value
-Sheets("Summary (9)").Range("D:D").Value = Sheets("Summary (11)").Range("H:H").Value
-Sheets("Summary (9)").Range("E:E").Value = Sheets("Summary (12)").Range("H:H").Value
+Sheets("Summary (10)").Range("C:C").Value = Sheets("Summary (11)").Range("H:H").Value
+Sheets("Summary (10)").Range("D:D").Value = Sheets("Summary (12)").Range("H:H").Value
+Sheets("Summary (10)").Range("E:E").Value = Sheets("Summary (13)").Range("H:H").Value
 
 Range("B1").Value = "Yesterday"
 Range("C1").Value = "2 Days"
 Range("D1").Value = "7 Days"
 Range("E1").Value = "30 Days"
 
-Worksheets("Summary (9)").Columns.AutoFit
+Worksheets("Summary (10)").Columns.AutoFit
 
-Worksheets("Summary (9)").Name = "Time"
+Worksheets("Summary (10)").Name = "Time"
 
 Worksheets("Time").Columns("A:E").Sort key1:=Range("A:A"), order1:=xlAscending, Header:=xlYes
 
-Worksheets("Time").Move _
- after:=Worksheets("Summary (5)")
+
 
 
 Application.DisplayAlerts = False
-Sheets("Summary (10)").Delete
 Sheets("Summary (11)").Delete
 Sheets("Summary (12)").Delete
+Sheets("Summary (13)").Delete
 Application.DisplayAlerts = True
 
-
-
-
-'Delete extra sheets''
+'New loop to delete extra sheets...
 '******************************************
-
 Application.DisplayAlerts = False
-Sheets("Mission-specific").Delete
-Sheets("Mission-specific (2)").Delete
-Sheets("Mission-specific (3)").Delete
-Sheets("Mission-specific (4)").Delete
-Sheets("Mission-specific (5)").Delete
-Sheets("Mission-specific (6)").Delete
-Sheets("Mission-specific (7)").Delete
-Sheets("Mission-specific (8)").Delete
-Sheets("Mission-specific (9)").Delete
-Sheets("Mission-specific (10)").Delete
-Sheets("Mission-specific (11)").Delete
-Sheets("Mission-specific (12)").Delete
-Sheets("Mission-specific (13)").Delete
-
-Sheets("Videos").Delete
-Sheets("Videos (2)").Delete
-Sheets("Videos (3)").Delete
-Sheets("Videos (4)").Delete
-Sheets("Videos (5)").Delete
-Sheets("Videos (6)").Delete
-Sheets("Videos (7)").Delete
-Sheets("Videos (8)").Delete
-Sheets("Videos (9)").Delete
-Sheets("Videos (10)").Delete
-Sheets("Videos (11)").Delete
-Sheets("Videos (12)").Delete
-Sheets("Videos (13)").Delete
-
-Sheets("Badges").Delete
-Sheets("Badges (2)").Delete
-Sheets("Badges (3)").Delete
-Sheets("Badges (4)").Delete
-Sheets("Badges (5)").Delete
-Sheets("Badges (6)").Delete
-Sheets("Badges (7)").Delete
-Sheets("Badges (8)").Delete
-Sheets("Badges (9)").Delete
-Sheets("Badges (10)").Delete
-Sheets("Badges (11)").Delete
-Sheets("Badges (12)").Delete
-Sheets("Badges (13)").Delete
-
-Sheets("Points").Delete
-Sheets("Points (2)").Delete
-Sheets("Points (3)").Delete
-Sheets("Points (4)").Delete
-Sheets("Points (5)").Delete
-Sheets("Points (6)").Delete
-Sheets("Points (7)").Delete
-Sheets("Points (8)").Delete
-Sheets("Points (9)").Delete
-Sheets("Points (10)").Delete
-Sheets("Points (11)").Delete
-Sheets("Points (12)").Delete
-Sheets("Points (13)").Delete
-
-Sheets("Exercises").Delete
-Sheets("Exercises (2)").Delete
-Sheets("Exercises (3)").Delete
-Sheets("Exercises (4)").Delete
-Sheets("Exercises (5)").Delete
-Sheets("Exercises (6)").Delete
-Sheets("Exercises (7)").Delete
-Sheets("Exercises (8)").Delete
-Sheets("Exercises (9)").Delete
-Sheets("Exercises (10)").Delete
-Sheets("Exercises (11)").Delete
-Sheets("Exercises (12)").Delete
-Sheets("Exercises (13)").Delete
-
-
-
+For Each Sheet In ActiveWorkbook.Worksheets
+    If Sheet.Name <> "Master" Then
+        If Sheet.Name <> "Time" Then
+          If Sheet.Name <> "Summary" Then
+            If Sheet.Name <> "Summary (2)" Then
+              If Sheet.Name <> "Summary (3)" Then
+                If Sheet.Name <> "Summary (4)" Then
+                  If Sheet.Name <> "Summary (5)" Then
+                    If Sheet.Name <> "Summary (6)" Then
+                      If Sheet.Name <> "Summary (7)" Then
+                        If Sheet.Name <> "Summary (8)" Then
+                          If Sheet.Name <> "Summary (9)" Then
+                            Worksheets(Sheet.Name).Delete
+                          End If
+                        End If
+                      End If
+                    End If
+                  End If
+                End If
+              End If
+            End If
+          End If
+        End If
+      End If
+Next Sheet
 Application.DisplayAlerts = True
 
 
-'algorithm to replace column values in each student sheet
+
+'algorithm to replace column values in each student sheet with
+' correct class name
 '*************************************************************
 
 Dim sh As Worksheet
 Dim rw As Range
 
-'Algebra 2
+'Algebra 1
 '*************************************************************
 Set sh = Worksheets("Summary")
+For Each rw In sh.rows
+    If sh.Cells(rw.Row, 13).Value = "" Then
+        Exit For
+    End If
+    If sh.Cells(rw.Row, 13).Value = "Classes" Then
+    'Do nothing, this is the title of the column
+    Else
+        sh.Cells(rw.Row, 13).Value = "Algebra 1"
+    End If
+Next rw
+
+'Algebra 2
+'*************************************************************
+Set sh = Worksheets("Summary (2)")
 For Each rw In sh.rows
     If sh.Cells(rw.Row, 13).Value = "" Then
         Exit For
@@ -182,7 +127,7 @@ Next rw
 
 'Calculus A
 '*************************************************************
-Set sh = Worksheets("Summary (2)")
+Set sh = Worksheets("Summary (3)")
 For Each rw In sh.rows
     If sh.Cells(rw.Row, 13).Value = "" Then
         Exit For
@@ -195,7 +140,7 @@ Next rw
 
 'Calculus B
 '*************************************************************
-Set sh = Worksheets("Summary (3)")
+Set sh = Worksheets("Summary (4)")
 For Each rw In sh.rows
     If sh.Cells(rw.Row, 13).Value = "" Then
         Exit For
@@ -208,7 +153,7 @@ Next rw
 
 'Geometry
 '*************************************************************
-Set sh = Worksheets("Summary (4)")
+Set sh = Worksheets("Summary (5)")
 For Each rw In sh.rows
     If sh.Cells(rw.Row, 13).Value = "" Then
         Exit For
@@ -221,7 +166,7 @@ Next rw
 
 'Pre Algebra
 '*************************************************************
-Set sh = Worksheets("Summary (5)")
+Set sh = Worksheets("Summary (6)")
 For Each rw In sh.rows
     If sh.Cells(rw.Row, 13).Value = "" Then
         Exit For
@@ -234,7 +179,7 @@ Next rw
 
 'Pre Calculus
 '*************************************************************
-Set sh = Worksheets("Summary (6)")
+Set sh = Worksheets("Summary (7)")
 For Each rw In sh.rows
     If sh.Cells(rw.Row, 13).Value = "" Then
         Exit For
@@ -245,9 +190,9 @@ For Each rw In sh.rows
     End If
 Next rw
 
-'Statistics
+' Statistics
 '*************************************************************
-Set sh = Worksheets("Summary (7)")
+Set sh = Worksheets("Summary (8)")
 For Each rw In sh.rows
     If sh.Cells(rw.Row, 13).Value = "" Then
         Exit For
@@ -258,9 +203,9 @@ For Each rw In sh.rows
     End If
 Next rw
 
-' Trigonometry
+'Trigonometry
 '*************************************************************
-Set sh = Worksheets("Summary (8)")
+Set sh = Worksheets("Summary (9)")
 For Each rw In sh.rows
     If sh.Cells(rw.Row, 13).Value = "" Then
         Exit For
@@ -271,24 +216,11 @@ For Each rw In sh.rows
     End If
 Next rw
 
-'Algebra 1
-'*************************************************************
-Set sh = Worksheets("Summary (13)")
-For Each rw In sh.rows
-    If sh.Cells(rw.Row, 13).Value = "" Then
-        Exit For
-    End If
-    If sh.Cells(rw.Row, 13).Value = "Classes" Then
-    Else
-        sh.Cells(rw.Row, 13).Value = "Algebra 1"
-    End If
-Next rw
-
 
 ' Delete the empty calculus B class
 '************************************
 Application.DisplayAlerts = False
-Sheets("Summary (3)").Delete
+Sheets("Summary (4)").Delete
 Application.DisplayAlerts = True
 
 
@@ -314,7 +246,7 @@ Application.DisplayAlerts = True
     Next sht
 
      'We don't want screen updating
-    Application.ScreenUpdating = False
+
 
      'Add new worksheet as the last worksheet
     Set trg = wrk.Worksheets.Add(After:=wrk.Worksheets(wrk.Worksheets.count))
@@ -352,29 +284,40 @@ Application.DisplayAlerts = True
     trg.Columns.AutoFit
 
      'Screen updating should be activated
-    Application.ScreenUpdating = True
 
 
-    Application.DisplayAlerts = False
-    Sheets("Summary").Delete
-    Sheets("Summary (2)").Delete
+
+  ''  Application.DisplayAlerts = False
+  ''  Sheets("Summary").Delete
+  ''  Sheets("Summary (2)").Delete
     ' this is BC Calculus'
     'Sheets("Summary (3)").Delete
-    Sheets("Summary (4)").Delete
-    Sheets("Summary (5)").Delete
-    Sheets("Summary (6)").Delete
-    Sheets("Summary (7)").Delete
-    Sheets("Summary (8)").Delete
-    Sheets("Summary (13)").Delete
+  ''  Sheets("Summary (4)").Delete
+  ''  Sheets("Summary (5)").Delete
+  ''  Sheets("Summary (6)").Delete
+  ''  Sheets("Summary (7)").Delete
+  ''  Sheets("Summary (8)").Delete
+  ''  Sheets("Summary (13)").Delete
 
-
-
+    'New loop to delete extra sheets...
+    '******************************************
+    Application.DisplayAlerts = False
+    For Each Sheet In ActiveWorkbook.Worksheets
+        If Sheet.Name <> "Master" Then
+            If Sheet.Name <> "Time" Then
+                Worksheets(Sheet.Name).Delete
+            End If
+        End If
+    Next Sheet
     Application.DisplayAlerts = True
 
 
 
 
+  Worksheets("Time").Move _
+   after:=Worksheets("Master")
 
+   Worksheets("Master").Activate
 
 
 'Rotate label text
@@ -671,3 +614,4 @@ Next i
 ' orange RGB(255,128,0)
 'Bold
 Worksheets("Master").Range("A:R").Font.Bold = True
+Application.ScreenUpdating = True
