@@ -7,7 +7,7 @@ Dim weekNumber As Integer
 Dim minutesPerDay As Integer
 Dim totalStudents As Integer
 
-weekNumber = 17
+weekNumber = 18
 totalStudents = 185
 minutesPerDay = 30
 
