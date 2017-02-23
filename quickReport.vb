@@ -139,15 +139,14 @@ Loop
 '****************************************************************************************************************************************'
 
 ' Delete duplicate entries'
-r = 2
-Do While r < 190
-  Do While Worksheets("Master").Cells(r,1).Value = Worksheets("Master").Cells(r+1,1).Value
-    Worksheets("Master").Cells(r+1,1).EntireRow.Delete
-    r = r + 1
-  Loop
-  r = r + 1
-Loop
 
+' this works for removing one of the duplicates... we need to edit so it can gtake all of them out... a while loop should do this but its too slow
+Worksheets("Master").Activate
+For r = 2 To 190
+    If Worksheets("Master").Cells(r, 1).Value = Worksheets("Master").Cells(r + 1, 1).Value Then
+        Rows(r).EntireRow.Delete
+    End If
+Next r
 
 
 
