@@ -1,12 +1,10 @@
 'Globals & Setup
 '*****************************************
 Dim weekNumber As Integer
-Dim minutesPerDay As Integer
 Dim totalStudents As Integer
 
 weekNumber = 18
 totalStudents = 190
-minutesPerDay = 30
 
 Application.DisplayAlerts = False
 Application.ScreenUpdating = False
@@ -56,7 +54,7 @@ For r = 2 To totalStudents 'row
 Next r
 
 '* if the value is 0, replace it with a "YES", otherwise replace with "NO"
-For r = 2 To totalStudents
+For r = 2 To 157
   If Worksheets("PLP").Cells(r,3).Value = 0 Then
     Worksheets("PLP").Cells(r,3).Value = "Yes"
   Else
@@ -154,6 +152,30 @@ Next r
 
 
 
+
+' Merge data'
+
+' bring over data from Khan Academy in Master to Quick Report'
+Worksheets("Quick Report").Activate
+Columns("A:Z").Sort key1:=Range("D:D"), order1:=xlAscending, Header:=xlYes
+For r = 2 to totalStudents
+  Worksheets("Quick Report").Cells(r,1).Value = Worksheets("Master").Cells(r,6).Value
+  Worksheets("Quick Report").Cells(r,2).Value = Worksheets("Master").Cells(r,7).Value
+next r
+
+' bring over data from PLP into Quick Report'
+Worksheets("Quick Report").Activate
+Columns("A:Z").Sort key1:=Range("F:F"), order1:=xlAscending, Header:=xlYes
+
+For r = 2 to totalStudents
+  Worksheets("Quick Report").Cells(r,3).Value = Worksheets("PLP").Cells(r,3).Value
+next r
+
+
+Worksheets("Master").delete
+Worksheets("PLP").delete
+
+
 '************************************************ THIS IS THE END ***********************************************************************'
 Application.DisplayAlerts = True
 Application.ScreenUpdating = True
@@ -161,23 +183,47 @@ Application.ScreenUpdating = True
 
 
 
-' Merge data'
+' formatting
+Range("E1").EntireColumn.Insert
+For r = 2 To totalStudents
+  Cells(r,5).Value = Cells(r,6).Value
+next r
+Range("F1:H1").EntireColumn.Delete
+Range("D1").EntireColumn.Delete
 
-Worksheets("Quick Report").Activate
 
+Range("A:A").NumberFormat = "#,###.#"
+Range("B:B").NumberFormat = "###"
+Range("A1:C1").ColumnWidth = 8
+Range("A:Z").Font.Bold = True
 
+Columns("A:Z").Sort key1:=Range("C:C"), order1:=xlDescending, Header:=xlYes
 
+' conditional coloring based on formulas
 
-'***********************
-'* Stuff to do next
+' Change values in col 1 to be the average time spent per week'
+Cells(1,1).Value = "Mins/Wk"
+For r = 2 To totalStudents
+  Cells(r,1).Value = Cells(r,1).Value / weekNumber
+next r
 
-'* 2. Merge data between "Master" & "Quick Report"
-'*
-'* 3. Calculate "up to date" information for "PLP" this will likely
-'*    be based on if there are any missing "Complete" values in
-'*
-'*
-'*
-'*
-'*
-'*
+' color based on if you are within 10% of KA target based on week number'
+Dim almost As Integer
+almost = weekNumber * 3 - 10
+For r = 2 To totalStudents
+  If Cells(r,2).Value >= almost Then
+    Cells(r,2).Font.Color = RGB(34,139,34)
+  Else
+    Cells(r,2).Font.Color = RGB(255,0,0)
+  End If
+next r
+
+' color based on if you are on track with POTW'
+
+For r = 2 to totalStudents
+  If Cells(r,3).Value = "Yes" Then
+    Cells(r,3).Font.Color = RGB(34,139,34)
+  Else
+    Cells(r,3).Font.Color = RGB(255,0,0)
+  End If
+Next r
