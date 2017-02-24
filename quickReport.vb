@@ -1,9 +1,11 @@
+'**************************************************************************************************************************************''
 'Globals & Setup
-'*****************************************
+'**************************************************************************************************************************************''
+
 Dim weekNumber As Integer
 Dim totalStudents As Integer
 
-weekNumber = 18
+weekNumber = 21
 totalStudents = 190
 
 Application.DisplayAlerts = False
@@ -55,7 +57,7 @@ Next r
 
 '* if the value is 0, replace it with a "YES", otherwise replace with "NO"
 For r = 2 To 157
-  If Worksheets("PLP").Cells(r,3).Value = 0 Then
+  If Worksheets("PLP").Cells(r,3).Value <= 1 Then
     Worksheets("PLP").Cells(r,3).Value = "Yes"
   Else
     Worksheets("PLP").Cells(r,3).Value = "No"
@@ -152,16 +154,21 @@ Next r
 
 
 
-
+'**************************************************************************************************************************************''
 ' Merge data'
+'**************************************************************************************************************************************''
+
 
 ' bring over data from Khan Academy in Master to Quick Report'
 Worksheets("Quick Report").Activate
 Columns("A:Z").Sort key1:=Range("D:D"), order1:=xlAscending, Header:=xlYes
 For r = 2 to totalStudents
-  Worksheets("Quick Report").Cells(r,1).Value = Worksheets("Master").Cells(r,6).Value
+' Pull data from last 30 days'
+  Worksheets("Quick Report").Cells(r,1).Value = Worksheets("Master").Cells(r,5).Value
+' Pull percent complete data'
   Worksheets("Quick Report").Cells(r,2).Value = Worksheets("Master").Cells(r,7).Value
 next r
+
 
 ' bring over data from PLP into Quick Report'
 Worksheets("Quick Report").Activate
@@ -172,25 +179,21 @@ For r = 2 to totalStudents
 next r
 
 
-Worksheets("Master").delete
-Worksheets("PLP").delete
 
-
-'************************************************ THIS IS THE END ***********************************************************************'
-Application.DisplayAlerts = True
-Application.ScreenUpdating = True
-'****************************************************************************************************************************************'
-
-
-
+'**************************************************************************************************************************************''
 ' formatting
+'**************************************************************************************************************************************''
+
+
 Range("E1").EntireColumn.Insert
 For r = 2 To totalStudents
   Cells(r,5).Value = Cells(r,6).Value
 next r
-Range("F1:H1").EntireColumn.Delete
-Range("D1").EntireColumn.Delete
 
+'**********************************************************  DEBUGGING ****************************************************************'
+'Range("F1:H1").EntireColumn.Delete
+'Range("D1").EntireColumn.Delete
+'**************************************************************************************************************************************''
 
 Range("A:A").NumberFormat = "#,###.#"
 Range("B:B").NumberFormat = "###"
@@ -201,11 +204,13 @@ Columns("A:Z").Sort key1:=Range("C:C"), order1:=xlDescending, Header:=xlYes
 
 ' conditional coloring based on formulas
 
-' Change values in col 1 to be the average time spent per week'
-Cells(1,1).Value = "Mins/Wk"
-For r = 2 To totalStudents
-  Cells(r,1).Value = Cells(r,1).Value / weekNumber
-next r
+' Change values in col 1 to be the  last 30 days'
+Cells(1,1).Value = "30 Days"
+
+' Deprecated - carry over from when we calculated average time per week'
+'For r = 2 To totalStudents
+''  Cells(r,1).Value = Cells(r,1).Value / weekNumber
+'next r
 
 ' color based on if you are within 10% of KA target based on week number'
 Dim almost As Integer
@@ -227,3 +232,32 @@ For r = 2 to totalStudents
     Cells(r,3).Font.Color = RGB(255,0,0)
   End If
 Next r
+
+
+'Color alternating rows
+'******************************************
+
+ActiveSheet.Range("A:Z").Select
+Set sh = Worksheets("Quick Report")
+Dim flip As Integer
+Dim arrs As Integer
+arrs = ActiveSheet.UsedRange.Rows.Count
+
+
+    For flip = 2 To arrs
+        'If the row is an odd number (within the selection)...
+        If flip Mod 2 = 0 Then
+            Cells(flip, 17).Interior.Color = RGB(240, 240, 240)
+            Selection.Rows(flip).Interior.Color = RGB(240, 240, 240)
+        End If
+    Next flip
+
+
+    'Worksheets("Master").delete
+    'Worksheets("PLP").delete
+
+
+    '************************************************ THIS IS THE END ***********************************************************************'
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+    '****************************************************************************************************************************************'
