@@ -1,16 +1,17 @@
-'Globals
+'Globals & Setup
 '*****************************************
 Dim weekNumber As Integer
 Dim minutesPerDay As Integer
 Dim totalStudents As Integer
 
 weekNumber = 18
-totalStudents = 185
+totalStudents = 190
 minutesPerDay = 30
 
-'* Delete extra files
 Application.DisplayAlerts = False
+Application.ScreenUpdating = False
 
+' Delete extra sheets
 Sheets("Time").Delete
 Sheets("Sheet1").Name = "Quick Report"
 Sheets("3.csv").Name = "PLP"
@@ -25,8 +26,6 @@ Worksheets("PLP").Activate
 Range("A1").EntireColumn.Delete
 Range("C1:L1").EntireColumn.Delete
 Range("C1").EntireColumn.Delete
-
-Application.DisplayAlerts = True              '* move this to the end
 
 '* clean up the PLP sheet and sort it by last name
 Worksheets("PLP").Activate
@@ -66,100 +65,112 @@ For r = 2 To totalStudents
 Next r
 
 
-' while loop to calculate averages
-Dim row As Integer
-Dim total As Integer
-row = 2
 
-Do While row <= totalStudents
+' while loop to calculate averages
+Worksheets("Master").Activate
+Dim total As Integer
+r = 2
+
+Do While r <= totalStudents
   total = 0
 
-  Do While Worksheets("Master").Cells(row,1).Value = Worksheets("Master").Cells(row+1,1).Value
-    total = total + Worksheets("Master").Cells(row,7).Value
-    Worksheets("Master").Cells(row,9).Value = total
-    row = row + 1
+  Do While Cells(r, 1).Value = Cells(r + 1, 1).Value
+        total = total + Cells(r, 7).Value
+        Cells(r, 9).Value = total
+        r = r + 1
+        If r > totalStudents Then
+          Exit Do
+        End If
   Loop
 
-    total = total + Worksheets("Master").Cells(row, 7).Value
-    Worksheets("Master").Cells(row, 9).Value = total
-    row = row + 1
+    total = total + Cells(r, 7).Value
+    Cells(r, 9).Value = total
+    r = r + 1
+
+    If r > totalStudents Then
+      Exit Do
+    End If
 Loop
+
 
 
 
 ' while loop to make each row a duplicate, fill in averages
 ' the last duplicate has the stuff total we want so we need to get
 ' that value and also count how many duplicates we have
-' we need to delete all but the last one.
-Dim count As Integer
-Dim t As Integer
+Worksheets("Master").Activate
+
+Dim rr As Integer
+Dim clicker As Integer
 Dim ave As Single
 Dim tempR As Integer
+rr = 2
 
-ave = 0
-r = 2
-count = 1
-t = 0
+Cells(1, 9).Value = "Total"
+Cells(1, 10).Value = "Clicker"
 
-Do While r <= 190
-  count = 1
+Do While rr < totalStudents
+    'set up a clicker to count duplicates.  Start at 1
+    clicker = 1
 
-  ' go through and count up duplicates
-  Do While Worksheets("Master").Cells(r, 1).Value = Worksheets("Master").Cells(r + 1, 1).Value
-    count = count + 1
-    r = r + 1
-  Loop
+    ' count up duplicate rows and stick in last row
+    Do While Cells(rr, 1).Value = Cells(rr + 1, 1).Value
+        'error checking to avoid long loop with emtpy cells
+        If Cells(rr, 1).Value = "" Then
+            Exit Do
+        End If
+        clicker = clicker + 1
+        rr = rr + 1
+    Loop
 
-  ' calculate the average and stick it in the last row of duplicates
-  t = Worksheets("Master").Cells(r, 9).Value
-  ave = t / count
-  Worksheets("Master").Cells(r, 7).Value = ave
+    'put the clicker amount in row 10
+    Cells(rr, 10).Value = clicker
 
-  'Debugging
-  Worksheets("Master").Cells(r, 11).Value = count
-  Worksheets("Master").Cells(r, 12).Value = r
-
-  ' Go through and copy total percentage calculated from Cells(r,9) and total
-  ' this works by counting from the last duplicate value back up
-  ' we will just delete duplicagtes at the end of this outter while loop'
-  tempR = r
-  Do While count >= 1
-    Worksheets("Master").Cells(tempR, 7).Value = ave
-    count = count - 1
-    tempR = tempR - 1
-    'Worksheets("Master").Cells(tempR, 1).EntireRow.Delete
-  Loop
-
-
-  Worksheets("Master").Cells(r, 10).Value = count
-  r = r + 1
+    rr = rr + 1
 Loop
 
+' calculate the averages and put them in place
+Worksheets("Master").Activate
+For rr = 2 To totalStudents
+    If Cells(rr, 10).Value = "" Then
+        Cells(rr, 7).Value = Cells(rr, 9).Value
+    Else
+        Cells(rr, 7).Value = Cells(rr, 9) / Cells(rr, 10)
+    End If
+Next rr
 
-'****************************************************************************************************************************************'
+
 
 ' Delete duplicate entries'
-
-' this works for removing one of the duplicates... we need to edit so it can gtake all of them out... a while loop should do this but its too slow
 Worksheets("Master").Activate
-For r = 2 To 190
-    If Worksheets("Master").Cells(r, 1).Value = Worksheets("Master").Cells(r + 1, 1).Value Then
+Dim i As Integer
+For r = 2 To totalStudents
+    For i = 1 To 5
+      If Cells(r, 1).Value = Cells(r + 1, 1).Value Then
         Rows(r).EntireRow.Delete
-    End If
+      End If
+    Next i
 Next r
+
+
+
+'************************************************ THIS IS THE END ***********************************************************************'
+Application.DisplayAlerts = True
+Application.ScreenUpdating = True
+'****************************************************************************************************************************************'
+
+
+
+' Merge data'
+
+Worksheets("Quick Report").Activate
+
 
 
 
 '***********************
 '* Stuff to do next
-'* 1. Calculate "up to date" information within the "Master" sheet
-'*    then copy it over to the "Quick Report" sheet.  This will be
-'*    tricky because not every kid is in math... maybe we fix this
-'*    by removing kids from the contacts spread sheet we use...
-'*    it would be best to do error handling within the sheet...
 
-'* 2.  Write a function to average the a2 & trig scores'
-'*
 '* 2. Merge data between "Master" & "Quick Report"
 '*
 '* 3. Calculate "up to date" information for "PLP" this will likely
