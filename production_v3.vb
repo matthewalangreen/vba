@@ -536,7 +536,7 @@ Next x
 ' More formatting of column widths
 '******************************************
 
-Range("H:N").NumberFormat = "#####"
+Range("H:N").NumberFormat = "#"
 Range("H:N").ColumnWidth = 6
 
 

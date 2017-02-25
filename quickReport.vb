@@ -215,8 +215,9 @@ next r
 'Range("D1").EntireColumn.Delete
 '**************************************************************************************************************************************''
 
-Range("A:A").NumberFormat = "#,###.#"
-Range("B:B").NumberFormat = "###"
+Worksheets("Quick Report").Activate
+Range("A:A").NumberFormat = "#"
+Range("B:B").NumberFormat = "#"
 Range("A1:C1").ColumnWidth = 8
 Range("A:Z").Font.Bold = True
 
