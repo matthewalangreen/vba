@@ -161,13 +161,33 @@ Next r
 
 ' bring over data from Khan Academy in Master to Quick Report'
 Worksheets("Quick Report").Activate
-Columns("A:Z").Sort key1:=Range("D:D"), order1:=xlAscending, Header:=xlYes
-For r = 2 to totalStudents
+
+' Old algorithm - no error checking'
+'Columns("A:Z").Sort key1:=Range("D:D"), order1:=xlAscending, Header:=xlYes
+'For r = 2 to totalStudents
 ' Pull data from last 30 days'
-  Worksheets("Quick Report").Cells(r,1).Value = Worksheets("Master").Cells(r,5).Value
+''  Worksheets("Quick Report").Cells(r,1).Value = Worksheets("Master").Cells(r,5).Value
 ' Pull percent complete data'
-  Worksheets("Quick Report").Cells(r,2).Value = Worksheets("Master").Cells(r,7).Value
-next r
+''  Worksheets("Quick Report").Cells(r,2).Value = Worksheets("Master").Cells(r,7).Value
+'next r
+''
+
+' new algorithm which adjusts the index based on if kids are missing in the "Master" sheet
+Columns("A:Z").Sort key1:=Range("D:D"), order1:=xlAscending, Header:=xlYes
+Dim q As Integer
+Dim x As Integer
+q = 2
+
+For x = 2 To totalStudents 'row
+	Do While Worksheets("Quick Report").Cells(q,4).Value <> Worksheets("Master").Cells(x,1).Value
+    q = q + 1
+	Loop
+
+	Worksheets("Quick Report").Cells(q,1).Value = Worksheets("Master").Cells(x,5)
+  Worksheets("Quick Report").Cells(q,2).Value = Worksheets("Master").Cells(x,7)
+	q = q + 1
+Next x
+
 
 
 ' bring over data from PLP into Quick Report'
