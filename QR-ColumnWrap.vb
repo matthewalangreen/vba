@@ -91,6 +91,7 @@ arrs = ActiveSheet.UsedRange.rows.count
     Range("E1").EntireColumn.Insert
     Range("E:E").ColumnWidth = 5
 
+Range("A:I").Select
 
 
 
