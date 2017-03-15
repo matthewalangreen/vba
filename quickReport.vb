@@ -5,7 +5,7 @@
 Dim weekNumber As Integer
 Dim totalStudents As Integer
 
-weekNumber = 21
+weekNumber = 24
 totalStudents = 190
 
 Application.DisplayAlerts = False
@@ -57,7 +57,7 @@ Next r
 
 '* if the value is 0, replace it with a "YES", otherwise replace with "NO"
 For r = 2 To 157
-  If Worksheets("PLP").Cells(r,3).Value <= 1 Then
+  If Worksheets("PLP").Cells(r,3).Value <= 2 Then  ' change this value to change the acceptable range.  2 is within 2 of targer
     Worksheets("PLP").Cells(r,3).Value = "Yes"
   Else
     Worksheets("PLP").Cells(r,3).Value = "No"
