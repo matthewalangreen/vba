@@ -183,7 +183,7 @@ For x = 2 To totalStudents 'row
     q = q + 1
 	Loop
 
-	Worksheets("Quick Report").Cells(q,1).Value = Worksheets("Master").Cells(x,5)
+	Worksheets("Quick Report").Cells(q,1).Value = Worksheets("Master").Cells(x,6) ' this congtrols which time to bring over -- col 5 is 30 days, col 6 is all time'
   Worksheets("Quick Report").Cells(q,2).Value = Worksheets("Master").Cells(x,7)
 	q = q + 1
 Next x

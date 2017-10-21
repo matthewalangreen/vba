@@ -17,7 +17,7 @@ Dim clicker As Integer
 clicker = 2
 
 
-For i = 2 To 200 'iterate over rows
+For i = 2 To 300 'iterate over rows
     Do While Worksheets("Combined").Cells(i,1).Value <> Worksheets("Master").Cells(clicker,1).Value
     		clicker = clicker + 1
         If Worksheets("Master").Cells(clicker,1).Value = "" Then
